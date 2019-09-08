@@ -50,8 +50,8 @@ class BlogSpider:
         ]
         self.url = 'https://chung567115.blog.csdn.net/article/details/90544963'
         self.urls = open('urls.txt', 'r').readlines()
-        self.proxies = open('ip_pool.txt', 'r').readlines()
-        # self.proxies = open('proxies.txt', 'r').readlines()
+        # self.proxies = open('ip_pool.txt', 'r').readlines()
+        self.proxies = open('proxies.txt', 'r').readlines()
         # self.proxies = open('qydaili_proxies.txt', 'r').readlines()
     
     def process(self):
