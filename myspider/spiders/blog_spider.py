@@ -61,6 +61,8 @@ class BlogSpider:
         works = []
         for url in self.urls:
             works.append(Process(target=self.get4bolg, args=(url.strip(),)))
+        
+        # works.append(Process(target=self.get4bolg, args=(self.url.strip(),)))
         for work in works:
             work.start()
     
@@ -81,12 +83,12 @@ class BlogSpider:
         try:
             cur_pro_name = multiprocessing.current_process().name
             cur_thr_name = threading.currentThread().getName()
-            result = requests.get(url, headers=headers, proxies=proxies, timeout=1, verify=True)
-            print("%s--%s, url:%s, param proxy:%s, status code:%s" % (cur_pro_name, cur_thr_name, url, str(proxies), str(result.status_code)))
-            if result.status_code == 200:
-                open('ip_pool.txt', 'a').write(proxy + '\n')
+            result = requests.get(url, headers=headers, proxies=proxies, timeout=2, verify=True)
+            print("%s--%s, url:%s, proxy:%s, status:%s" % (cur_pro_name, cur_thr_name, url, str(proxy), str(result.status_code)))
+            # if result.status_code == 200:
+            #     open('ip_pool.txt', 'a').write(proxy + '\n')
         except Exception as e:
-            print(e)
+            # print(e)
             pass
             # continue
 
