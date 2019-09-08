@@ -4,6 +4,7 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import random
 
 from scrapy import signals
 
@@ -78,8 +79,22 @@ class MyspiderDownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
-
+        # return None
+        
+        # 对request对象加上proxy
+        proxy = self.get_random_proxy()
+        print("this is request ip:" + proxy)
+        request.meta['proxy'] = proxy
+    
+    def get_random_proxy(self):
+        # 随机从文件中读取proxy
+        while 1:
+            with open('D:\PythonCode\myspider\myspider\spiders\proxies.txt', 'r') as f:
+                proxies = f.readlines()
+            if proxies:
+                break
+        return random.choice(proxies).strip()
+    
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
 
@@ -101,3 +116,14 @@ class MyspiderDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+class RandomUserAgentMiddleware():
+    def __init__(self):
+        self.user_agents = [
+            'Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)',
+            'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2',
+            'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'
+        ]
+
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = random.choice(self.user_agents)
